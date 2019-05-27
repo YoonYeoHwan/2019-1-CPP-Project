@@ -1,90 +1,52 @@
-#include "game.cpp"
+#include <fstream>
 #include <iostream>
+using namespace std;
 class mapArray{
-private:
-    int level_1[10][10]={{4,4,4,4,4,4,4,4,4,4},{4,4,4,4,4,4,4,4,4,4},{4,4,1,1,1,1,1,4,4,4},{4,4,1,0,0,0,1,4,4,4},{4,4,1,3,3,3,1,4,4,4},{4,4,1,2,2,2,1,1,4,4},{4,4,1,0,0,0,0,1,4,4},{4,4,1,0,0,0,0,1,4,4},{4,4,1,1,1,1,1,1,4,4},{4,4,4,4,4,4,4,4,4,4}};
-    int level_2[10][10]={{4,4,4,4,4,4,4,4,4,4},{4,4,1,1,1,1,1,4,4,4},{4,4,1,3,0,1,1,4,4,4},{4,4,1,3,0,0,1,4,4,4},{4,4,1,3,0,2,1,4,4,4},{4,4,1,1,2,0,1,1,1,4},{4,4,4,1,0,2,0,0,1,4},{4,4,4,1,0,0,0,0,1,4},{4,4,4,1,0,0,1,1,1,4},{4,4,4,1,1,1,1,4,4,4}};
-    int level_3[10][10]={{4,4,4,4,4,4,4,4,4,4},{4,4,4,4,4,4,4,4,4,4},{4,4,4,4,4,4,4,4,4,4},{4,1,1,1,1,1,1,1,1,4},{4,1,3,0,0,0,0,0,1,4},{4,1,0,3,2,2,2,0,1,4},{4,1,3,0,0,0,0,0,1,4},{4,1,1,1,1,1,0,0,1,4},{4,4,4,4,4,1,1,1,1,4},{4,4,4,4,4,4,4,4,4,4}};
-    int level_4[10][10]={{4,4,4,4,4,4,4,4,4,4},{4,1,1,1,1,1,1,1,4,4},{4,1,0,0,0,0,0,1,4,4},{4,1,0,3,2,3,0,1,4,4},{4,1,0,2,3,2,0,1,4,4},{4,1,0,3,2,3,0,1,4,4},{4,1,0,2,3,2,0,1,4,4},{4,1,0,0,0,0,0,1,4,4},{4,1,1,1,1,1,1,1,4,4},{4,4,4,4,4,4,4,4,4,4}};
-    int level_5[10][10]={{4,4,4,4,4,4,4,4,4,4},{4,4,4,4,4,4,4,4,4,4},{4,1,1,1,1,4,4,4,4,4},{4,1,0,0,1,1,1,1,4,4},{4,1,0,0,0,0,0,1,1,4},{1,1,0,1,1,0,0,0,1,4},{1,3,0,3,1,0,0,2,1,1},{1,0,0,0,1,0,2,2,0,1},{1,0,0,3,1,0,0,0,0,1},{1,1,1,1,1,1,1,1,1,1}};
-    int level_1_a_s[10][10]={0};
-    int level_2_a_s[10][10]={0};
-    int level_3_a_s[10][10]={0};
-    int level_4_a_s[10][10]={0};
-    int level_5_a_s[10][10]={0};
 public:
-    int (*getLevel_1())[10];
-    int (*getLevel_2())[10];
-    int (*getLevel_3())[10];
-    int (*getLevel_4())[10];
-    int (*getLevel_5())[10];
-    int (*getLevel_1_a_s())[10];
-    int (*getLevel_2_a_s())[10];
-    int (*getLevel_3_a_s())[10];
-    int (*getLevel_4_a_s())[10];
-    int (*getLevel_5_a_s())[10];
-    
+    void set_map(int map_arr[][10],int level);    
 };
 
-int (*mapArray::getLevel_1())[10]{
-    return level_1;
+void mapArray::set_map(int map_arr[][10],int level){
+    ifstream input;
+    if(level==1){
+        input.open("level1.txt");
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                input>>map_arr[i][j];
+            }
+        }
+    }
+    else if(level==2){
+        input.open("level2.txt");
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                input>>map_arr[i][j];
+            }
+        }
+    }
+    else if(level==3){
+        input.open("level3.txt");
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                input>>map_arr[i][j];
+            }
+        }
+    }
+    if(level==4){
+        input.open("level4.txt");
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                input>>map_arr[i][j];
+            }
+        }
+    }
+    if(level==5){
+        input.open("level5.txt");
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                input>>map_arr[i][j];
+            }
+        }
+    }
 }
 
-int (*mapArray::getLevel_2())[10]{
-    return level_2;
-}
-
-int (*mapArray::getLevel_3())[10]{
-    return level_3;
-}
-
-int (*mapArray::getLevel_4())[10]{
-    return level_4;
-}
-
-int (*mapArray::getLevel_5())[10]{
-    return level_5;
-}
-
-int (*mapArray::getLevel_1_a_s())[10]{
-    levle_1_a_s[7][7]=1;
-    level_1_a_s[4][3]=2;
-    level_1_a_s[4][4]=2
-    level_1_a_s[4][5]=2
-    return level_1_a_s;
-}
-
-int (*mapArray::getLevel_2_a_s())[10]{
-    levle_2_a_s[3][7]=1;
-    level_2_a_s[1][3]=2;
-    level_2_a_s[2][3]=2
-    level_2_a_s[3][3]=2
-    return level_2_a_s;
-}
-
-int (*mapArray::getLevel_3_a_s())[10]{
-    levle_3_a_s[7][7]=1;
-    level_3_a_s[4][2]=2;
-    level_3_a_s[5][3]=2
-    level_3_a_s[6][2]=2
-    return level_3_a_s;
-}
-
-int (*mapArray::getLevel_4_a_s())[10]{
-    levle_4_a_s[8][7]=1;
-    level_4_a_s[3][3]=2;
-    level_4_a_s[3][5]=2;
-    level_4_a_s[4][4]=2;
-    level_4_a_s[5][3]=2;
-    level_4_a_s[5][5]=2;
-    level_4_a_s[6][4]=2;
-    return level_4_a_s;
-}
-
-int (*mapArray::getLevel_5_a_s())[10]{
-    levle_5_a_s[7][9]=1;
-    level_5_a_s[6][1]=2;
-    level_5_a_s[6][3]=2
-    level_5_a_s[8][3]=2
-    return level_5_a_s;
-}

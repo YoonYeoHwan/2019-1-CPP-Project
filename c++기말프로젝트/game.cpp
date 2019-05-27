@@ -1,20 +1,18 @@
 #include <ncurses.h>
-#include <iostream>
-#include <fstream>
 #include "map.cpp"
 
 enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
 
 class PushBoxGame{
 private:
-    mapArray a;
+    mapArray m;
     WINDOW *game_map;
     WINDOW *win_push;
     WINDOW *win_level;
     WINDOW *win_step;
-    int *map_arr;
-    int startingA;
-    int startingB;
+    int map_arr[10][10];
+    int a;
+    int b;
 public:
     PushBoxGame(){
         initscr();
@@ -32,75 +30,247 @@ public:
         refresh();
     }
     void setMap(int level);
-    void newGame(int map[]);
-    void moveUP(int map[]);
-    void moveDOWN(int map[]);
-    void moveRIGHT(int map[]);
-    void moveLEFT(int map[]);
-    void finishGame(int map[]);
-    int *getMap();
+    void newGame(int map[][10]);
+    void moveUP(int map[][10]);
+    void moveDOWN(int map[][10]);
+    void moveRIGHT(int map[][10]);
+    void moveLEFT(int map[][10]);
+    bool finishGame(int map[][10],int map_a_s[][10]);
+    int (*getMap())[10];
 };
+int (*PushBoxGame::getMap())[10]{
+    return map_arr;
+}
 
 void PushBoxGame::setMap(int level){
     if(level==1){
-        map_arr=a.getLevel_1();
-        newGame(map_arr,a.getLevel1_a_s());
+        m.set_map(map_arr,level);
     }
     else if(level==2){
-        map_arr=a.getLevel_2();
-        newGame(map_arr,a.getLevel2_a_s());
+        m.set_map(map_arr,level);
     }
     else if(level==3){
-        map_arr=a.getLevel_3();
-        newGame(map_arr,a.getLevel3_a_s());
+        m.set_map(map_arr,level);
     }
     else if(level==4){
-        map_arr=a.getLevel_4();
-        newGame(map_arr,a.getLevel4_a_s());
+        m.set_map(map_arr,level);
     }
     else if(level==5){
-        map_arr=a.getLevel_5();
-        newGame(map_arr,a.getLevel5_a_s());
+        m.set_map(map_arr,level);
     }
 }
 
-void PushBoxGame::newGame(int map[][],int map_a_s[][]){
+void PushBoxGame::newGame(int map[][10]){
     //맵 생성
-    GameMap=newwin(12,14,10,7);
-    wborder(GameMap,'|','|','-','-','+','+','+','+');
+    game_map=newwin(12,14,10,7);
+    wborder(game_map,'|','|','-','-','+','+','+','+');
     for(int i=0;i<=9;i++){
         for(int j=0;j<=9;j++){
             if(map[i][j]==1){
-                wattron(GameMap,COLOR_PAIR(1));
-                mvwprintw(GameMap,i+1,j+3,"#");
-                wattroff(GameMap,COLOR_PAIR(1));
+                wattron(game_map,COLOR_PAIR(1));
+                mvwprintw(game_map,i+1,j+3,"#");
+                wattroff(game_map,COLOR_PAIR(1));
             }
-            else if(map[i][j]==2) mvwprintw(GameMap,i+1,j+3,"*");
-            else if(map[i][j]==3) mvwprintw(GameMap,i+1,j+3,"@");
-            else mvwprintw(GameMap,i+1,j+3," ");
+            else if(map[i][j]==2) mvwprintw(game_map,i+1,j+3,"*");
+            else if(map[i][j]==3) mvwprintw(game_map,i+1,j+3,"@");
+            else mvwprintw(game_map,i+1,j+3," ");
         }
     }
-    wrefresh(GameMap);
+    wrefresh(game_map);
 
     //캐릭터 생성
-    for(int i=0;i<10;i++){
-        for(int j=0;j<10;j++){
-            if(map_a_s[i][j]==1){
-                startingA=i+1;
-                startingB=j+3;
-                break;
-            }
-        }
-    }
-    mvwprintw(map,startingA,startingB,"O");
-    wrefresh(GameMap);
-
-    for(int i=0;i<10;i++){
-        for(int j=0;j<10;j++){
-            if(map_arr[i][j]==1){
-                
-            }
-        }
-    }
+    // for(int i=0;i<10;i++){
+    //     for(int j=0;j<10;j++){
+    //         if(map_a_s[i][j]==1){
+    //             a=i+1;
+    //             b=j+3;
+    //             break;
+    //         }
+    //     }
+    // }
+    mvwprintw(game_map,7,7,"O");
+    wrefresh(game_map);
+    a=7;
+    b=7;
 }
+
+void PushBoxGame::moveUP(int map[][10]){
+    int up=a-2; // y+1 좌표
+    int up2=a-3; // y+2 좌표
+    if(map[up][b-3]==Wall) return; // y+1 벽
+    else if(map[up][b-3]==Box){ // y+1 박스
+        if(map[up2][b-3]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[up2][b-3]==Box || map[up2][b-3]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else{
+            if(map[up2][b-3]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a-2,b,"*");
+                map[up2][b-3]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[up][b-3]=Space;
+            }
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a-2,b,"*");
+                map[up2][b-3]=Box;
+                map[up][b-3]=Space;
+            }
+        }
+    }
+    else if(map[up][b-3]==BoxOnGoal) {
+        if(map[up2][b-3]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[up2][b-3]==Box || map[up2][b-3]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else {
+            if(map[up2][b-3]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a-2,b,"*");
+                map[up2][b-3]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[up][b-3]=Goal;
+            }
+
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a-2,b,"*");
+                map[up2][b-3]=Box;
+                map[up][b-3]=Goal;
+            }
+        }
+
+    }
+    if(map[a-1][b-3]==Goal) mvwprintw(game_map,a,b,"@");
+    else if(map[a-1][b-3]==Space) mvwprintw(game_map,a,b," ");
+    a--;
+    mvwprintw(game_map,a,b,"O");
+    wrefresh(game_map);
+}
+void PushBoxGame::moveDOWN(int map[][10]){
+    int down=a; // y+1 좌표
+    int down2=a+1; // y+2 좌표
+    if(map[down][b-3]==Wall) return; // y+1 벽
+    else if(map[down][b-3]==Box){ // y+1 박스
+        if(map[down2][b-3]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[down2][b-3]==Box || map[down2][b-3]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else{
+            if(map[down2][b-3]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a+2,b,"*");
+                map[down2][b-3]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[down][b-3]=Space;
+            }
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a+2,b,"*");
+                map[down2][b-3]=Box;
+                map[down][b-3]=Space;
+            }
+        }
+    }
+    else if(map[down][b-3]==BoxOnGoal) {
+        if(map[down2][b-3]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[down2][b-3]==Box || map[down2][b-3]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else {
+            if(map[down2][b-3]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a+2,b,"*");
+                map[down2][b-3]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[down][b-3]=Goal;
+            }
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a+2,b,"*");
+                map[down2][b-3]=Box;
+                map[down][b-3]=Goal;
+            }
+        }
+
+    }
+
+    if(map[a-1][b-3]==Goal) mvwprintw(game_map,a,b,"@");
+    else if(map[a-1][b-3]==Space) mvwprintw(game_map,a,b," ");
+    a++;
+    mvwprintw(game_map,a,b,"O");
+    wrefresh(game_map);
+}
+
+void PushBoxGame::moveLEFT(int map[][10]){
+    int left=b-4; // y+1 좌표
+    int left2=b-5; // y+2 좌표
+    if(map[a-1][left]==Wall) return; // y+1 벽
+    else if(map[a-1][left]==Box){ // y+1 박스
+        if(map[a-1][left2]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[a-1][left2]==Box || map[a-1][left2]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else{
+            if(map[a-1][left2]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a,b-2,"*");
+                map[a-1][left2]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[a-1][left]=Space;
+            }
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a,b-2,"*");
+                map[a-1][left2]=Box;
+                map[a-1][left]=Space;
+            }
+        }
+    }
+    else if(map[a-1][left]==BoxOnGoal) {
+        if(map[a-1][left2]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[a-1][left2]==Box || map[a-1][left2]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else {
+            if(map[a-1][left2]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a,b-2,"*");
+                map[a-1][left2]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[a-1][left]=Goal;
+            }
+
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a,b-2,"*");
+                map[a-1][left2]=Box;
+                map[a-1][left]=Goal;
+            }
+        }
+
+    }
+    if(map[a-1][b-3]==Goal) mvwprintw(game_map,a,b,"@");
+    else if(map[a-1][b-3]==Space) mvwprintw(game_map,a,b," ");
+    b--;
+    mvwprintw(game_map,a,b,"O");
+    wrefresh(game_map);
+}
+
+void PushBoxGame::moveRIGHT(int map[][10]){
+    int right=b-2; // y+1 좌표
+    int right2=b-1; // y+2 좌표
+    if(map[a-1][right]==Wall) return; // y+1 벽
+    else if(map[a-1][right]==Box){ // y+1 박스
+        if(map[a-1][right2]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[a-1][right2]==Box || map[a-1][right2]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else{
+            if(map[a-1][right2]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a,b+2,"*");
+                map[a-1][right2]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[a-1][right]=Space;
+            }
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a,b+2,"*");
+                map[a-1][right2]=Box;
+                map[a-1][right]=Space;
+            }
+        }
+    }
+    else if(map[a-1][right]==BoxOnGoal) {
+        if(map[a-1][right2]==Wall) return; // y+1 박스 && y+2 벽
+        else if(map[a-1][right2]==Box || map[a-1][right2]==BoxOnGoal) return; // y+1 박스 && y+2 박스
+        else {
+            if(map[a-1][right2]==Goal) { // y+1 박스 && y+2 골
+                mvwprintw(game_map,a,b+2,"*");
+                map[a-1][right2]=BoxOnGoal; // 5는 골 자리에 상자가 올라가있는 경우
+                map[a-1][right]=Goal;
+            }
+
+            else { // y+1 박스 && y+2 공간
+                mvwprintw(game_map,a,b+2,"*");
+                map[a-1][right2]=Box;
+                map[a-1][right]=Goal;
+            }
+        }
+
+    }
+    if(map[a-1][b-3]==Goal) mvwprintw(game_map,a,b,"@");
+    else if(map[a-1][b-3]==Space) mvwprintw(game_map,a,b," ");
+    b++;
+    mvwprintw(game_map,a,b,"O");
+    wrefresh(game_map);
+}
+
 
