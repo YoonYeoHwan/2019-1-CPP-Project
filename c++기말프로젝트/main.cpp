@@ -1,4 +1,5 @@
-#include "game.cpp"
+#include "PushBoxGame.h"
+
 int main(){
     PushBoxGame g;
     int level=2;
