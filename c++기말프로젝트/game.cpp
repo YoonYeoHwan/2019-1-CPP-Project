@@ -1,14 +1,22 @@
-#include <ncurses.h>
-#include "map.h"
 #include "PushBoxGame.h"
-
+#include <string>
 int (*PushBoxGame::getMap())[10]{
     return map_arr;
 }
 
 void PushBoxGame::setMap(int level){
+    while(getch() != 'c') {}
+    
     if(level==1){
         goalCount=m.set_map(map_arr,level);
+        // for(int i=0; i<10; i++) {
+        //     for(int j=0; j<10; j++) {
+        //         std::string tt = "";
+        //         tt += (char)map_arr[i][j];
+        //         mvwprintw(testWin,i,j,tt.c_str());
+        //         wrefresh(testWin);
+        //     }
+        // }
     }
     else if(level==2){
         m.set_map(map_arr,level);
@@ -27,6 +35,7 @@ void PushBoxGame::setMap(int level){
 void PushBoxGame::newGame(int map[][10]){
     //맵 생성
     game_map=newwin(12,14,10,7);
+    testWin=newwin(50,50,30,30);
     wborder(game_map,'|','|','-','-','+','+','+','+');
     for(int i=0;i<=9;i++){
         for(int j=0;j<=9;j++){

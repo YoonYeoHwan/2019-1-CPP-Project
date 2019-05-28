@@ -12,9 +12,10 @@ class PushBoxGame{
 private:
     mapArray m;
     WINDOW *game_map;
-    WINDOW *win_push;
-    WINDOW *win_level;
-    WINDOW *win_step;
+    WINDOW *testWin; // test
+    // WINDOW *win_push;
+    // WINDOW *win_level;
+    // WINDOW *win_step;
     int map_arr[10][10];
     position start;
     int a;

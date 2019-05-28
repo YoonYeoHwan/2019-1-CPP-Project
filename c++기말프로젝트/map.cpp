@@ -6,9 +6,10 @@ using namespace std;
 int mapArray::set_map(int map_arr[][10],int level){
     ifstream input;
     if(level==1){
-        input.open("level1.txt");
+        input.open("mapFile/level1.txt");
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
+                
                 input>>map_arr[i][j];
             }
         }
@@ -17,15 +18,17 @@ int mapArray::set_map(int map_arr[][10],int level){
         return goal;
     }
     else if(level==2){
-        input.open("level2.txt");
+        input.open("mapFile/level2.txt");
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
+                // int c;
+                // input >> c;
                 input>>map_arr[i][j];
             }
         }
     }
     else if(level==3){
-        input.open("level3.txt");
+        input.open("mapFile/level3.txt");
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 input>>map_arr[i][j];
@@ -33,7 +36,7 @@ int mapArray::set_map(int map_arr[][10],int level){
         }
     }
     if(level==4){
-        input.open("level4.txt");
+        input.open("mapFile/level4.txt");
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 input>>map_arr[i][j];
@@ -41,7 +44,7 @@ int mapArray::set_map(int map_arr[][10],int level){
         }
     }
     if(level==5){
-        input.open("level5.txt");
+        input.open("mapFile/level5.txt");
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 input>>map_arr[i][j];
