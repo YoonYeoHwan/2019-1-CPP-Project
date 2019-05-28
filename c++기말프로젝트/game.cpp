@@ -1,7 +1,11 @@
 #include <ncurses.h>
 #include "map.cpp"
-
 enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
+
+struct position{
+    int x,y;
+    position(int x=0,int y=0):x(x),y(y){}
+};
 
 class PushBoxGame{
 private:
@@ -11,8 +15,10 @@ private:
     WINDOW *win_level;
     WINDOW *win_step;
     int map_arr[10][10];
+    position start;
     int a;
     int b;
+    int goalCount;
 public:
     PushBoxGame(){
         initscr();
@@ -35,7 +41,7 @@ public:
     void moveDOWN(int map[][10]);
     void moveRIGHT(int map[][10]);
     void moveLEFT(int map[][10]);
-    bool finishGame(int map[][10],int map_a_s[][10]);
+    bool finishGame();
     int (*getMap())[10];
 };
 int (*PushBoxGame::getMap())[10]{
@@ -44,7 +50,7 @@ int (*PushBoxGame::getMap())[10]{
 
 void PushBoxGame::setMap(int level){
     if(level==1){
-        m.set_map(map_arr,level);
+        goalCount=m.set_map(map_arr,level);
     }
     else if(level==2){
         m.set_map(map_arr,level);
@@ -76,22 +82,10 @@ void PushBoxGame::newGame(int map[][10]){
             else mvwprintw(game_map,i+1,j+3," ");
         }
     }
-    wrefresh(game_map);
-
-    //캐릭터 생성
-    // for(int i=0;i<10;i++){
-    //     for(int j=0;j<10;j++){
-    //         if(map_a_s[i][j]==1){
-    //             a=i+1;
-    //             b=j+3;
-    //             break;
-    //         }
-    //     }
-    // }
-    mvwprintw(game_map,7,7,"O");
-    wrefresh(game_map);
     a=7;
     b=7;
+    mvwprintw(game_map,a,b,"O");
+    wrefresh(game_map);
 }
 
 void PushBoxGame::moveUP(int map[][10]){
@@ -271,6 +265,17 @@ void PushBoxGame::moveRIGHT(int map[][10]){
     b++;
     mvwprintw(game_map,a,b,"O");
     wrefresh(game_map);
+}
+
+bool PushBoxGame::finishGame(){
+    int cnt=0;
+    for(int i=0;i<10;i++){
+        for(int j=0;j<10;j++){
+            if(map_arr[i][j]) cnt++;
+        }
+    }
+    if(goalCount==cnt) return true;
+    else return false;
 }
 
 
