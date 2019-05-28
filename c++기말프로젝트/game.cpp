@@ -33,7 +33,25 @@ public:
         border('*','*','*','*','*','*','*','*');
         mvprintw(2,7,"push box game");
         attroff(COLOR_PAIR(2));
+
+        attron(COLOR_PAIR(2));
+        win_level=newwin(4,7,4,2);
+        wborder(win_level,'|','|','-','-','+','+','+','+');
+        mvwprintw(win_level,1,1,"Level");
+        mvwprintw(win_level,2,3,"0");
+        win_push=newwin(4,7,4,10);
+        wborder(win_push,'|','|','-','-','+','+','+','+');
+        mvwprintw(win_push,1,1,"Push");
+        mvwprintw(win_push,2,3,"0");
+        win_step=newwin(4,7,4,18);
+        wborder(win_step,'|','|','-','-','+','+','+','+');
+        mvwprintw(win_step,1,1,"Step");
+        mvwprintw(win_step,2,3,"0");
+        attroff(COLOR_PAIR(2));
         refresh();
+        wrefresh(win_level);
+        wrefresh(win_push);
+        wrefresh(win_step);
     }
     void setMap(int level);
     void newGame(int map[][10]);
