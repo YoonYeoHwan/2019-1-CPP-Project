@@ -1,10 +1,9 @@
-#include "PushBoxGame.h"
-
+#include "game.cpp"
 int main(){
     PushBoxGame g;
-    int level=2;
+    int level=1;
     while(1){
-        g.setMap(level);
+        g.setMap(level++);
         g.newGame(g.getMap());
         while(true){
             int inputKey=getch();

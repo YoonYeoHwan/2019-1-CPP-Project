@@ -1,41 +1,74 @@
-#include "PushBoxGame.h"
-#include <string>
+#include <ncurses.h>
+#include "map.cpp"
+enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
+
+struct position{
+    int x,y;
+    position(int x=0,int y=0):x(x),y(y){}
+};
+
+class PushBoxGame{
+private:
+    mapArray m;
+    WINDOW *game_map;
+    WINDOW *win_push;
+    WINDOW *win_level;
+    WINDOW *win_step;
+    int map_arr[10][10];
+    position start;
+    int a;
+    int b;
+    int goalCount;
+public:
+    PushBoxGame(){
+        initscr();
+        keypad(stdscr, TRUE);
+        curs_set(0);
+        noecho();
+        start_color();
+        init_pair(1, COLOR_YELLOW, COLOR_YELLOW);
+        init_pair(2,COLOR_RED,COLOR_BLUE);
+        resize_term(27,27);
+        attron(COLOR_PAIR(2));
+        border('*','*','*','*','*','*','*','*');
+        mvprintw(2,7,"push box game");
+        attroff(COLOR_PAIR(2));
+        refresh();
+    }
+    void setMap(int level);
+    void newGame(int map[][10]);
+    void moveUP(int map[][10]);
+    void moveDOWN(int map[][10]);
+    void moveRIGHT(int map[][10]);
+    void moveLEFT(int map[][10]);
+    bool finishGame();
+    int (*getMap())[10];
+};
 int (*PushBoxGame::getMap())[10]{
     return map_arr;
 }
 
 void PushBoxGame::setMap(int level){
-    while(getch() != 'c') {}
-    
     if(level==1){
-        goalCount=m.set_map(map_arr,level);
-        // for(int i=0; i<10; i++) {
-        //     for(int j=0; j<10; j++) {
-        //         std::string tt = "";
-        //         tt += (char)map_arr[i][j];
-        //         mvwprintw(testWin,i,j,tt.c_str());
-        //         wrefresh(testWin);
-        //     }
-        // }
+        m.set_map(map_arr,level,a,b,goalCount);
     }
     else if(level==2){
-        m.set_map(map_arr,level);
+        m.set_map(map_arr,level,a,b,goalCount);
     }
     else if(level==3){
-        m.set_map(map_arr,level);
+        m.set_map(map_arr,level,a,b,goalCount);
     }
     else if(level==4){
-        m.set_map(map_arr,level);
+        m.set_map(map_arr,level,a,b,goalCount);
     }
     else if(level==5){
-        m.set_map(map_arr,level);
+        m.set_map(map_arr,level,a,b,goalCount);
     }
 }
 
 void PushBoxGame::newGame(int map[][10]){
     //맵 생성
     game_map=newwin(12,14,10,7);
-    testWin=newwin(50,50,30,30);
     wborder(game_map,'|','|','-','-','+','+','+','+');
     for(int i=0;i<=9;i++){
         for(int j=0;j<=9;j++){
@@ -49,8 +82,6 @@ void PushBoxGame::newGame(int map[][10]){
             else mvwprintw(game_map,i+1,j+3," ");
         }
     }
-    a=7;
-    b=7;
     mvwprintw(game_map,a,b,"O");
     wrefresh(game_map);
 }
@@ -238,7 +269,7 @@ bool PushBoxGame::finishGame(){
     int cnt=0;
     for(int i=0;i<10;i++){
         for(int j=0;j<10;j++){
-            if(map_arr[i][j]) cnt++;
+            if(map_arr[i][j]==5) cnt++;
         }
     }
     if(goalCount==cnt) return true;
