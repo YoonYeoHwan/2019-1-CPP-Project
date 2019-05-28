@@ -2,10 +2,6 @@
 #include <iostream>
 #include "map.h"
 using namespace std;
-// class mapArray{
-// public:
-//     void set_map(int map_arr[][10],int level,int &a,int &b,int &goalCount);    
-// };
 
 void mapArray::set_map(int map_arr[][10],int level,int &a,int &b,int &goalCount){
     ifstream input;
