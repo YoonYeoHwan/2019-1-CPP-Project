@@ -17,6 +17,7 @@ private:
     WINDOW *win_push;
     WINDOW *win_level;
     WINDOW *win_step;
+    WINDOW *win_start;
     int map_arr[10][10];
     position start;
     int a;
@@ -31,6 +32,22 @@ public:
         start_color();
         init_pair(1, COLOR_YELLOW, COLOR_YELLOW);
         init_pair(2,COLOR_RED,COLOR_BLUE);
+        init_pair(3,COLOR_RED,COLOR_WHITE);
+
+        win_start=newwin(27,27,0,0);
+        wattron(win_start,COLOR_PAIR(2));
+        wborder(win_start,'*','*','*','*','*','*','*','*');
+        wattroff(win_start,COLOR_PAIR(2));
+        wattron(win_start,COLOR_PAIR(3));
+        mvwprintw(win_start, 4, 7, "PUSH BOX GAME");
+        mvwprintw(win_start, 12, 7, "PRESS ANY KEY");
+        mvwprintw(win_start, 14, 7, "TO START GAME");
+        wattroff(win_start,COLOR_PAIR(3));        
+        refresh();
+        wrefresh(win_start);
+        getch();
+        delwin(win_start);
+
         resize_term(27,27);
         attron(COLOR_PAIR(2));
         border('*','*','*','*','*','*','*','*');

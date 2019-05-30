@@ -63,14 +63,12 @@ void PushBoxGame::moveUP(int map[][10]){
         else{
             if(map[up2][b-3]==Goal) {
                 s.pushUp();
-                // stepRefresh(win_step,s.getStep());
                 mvwprintw(game_map,a-2,b,"*");
                 map[up2][b-3]=BoxOnGoal; 
                 map[up][b-3]=Space;
             }
             else {
                 s.pushUp(); 
-                // stepRefresh(win_step,s.getStep());
                 mvwprintw(game_map,a-2,b,"*");
                 map[up2][b-3]=Box;
                 map[up][b-3]=Space;
@@ -280,5 +278,3 @@ void PushBoxGame::pushRefresh(WINDOW *win,int push){
     mvwprintw(win,2,3,"%d",push);
     wrefresh(win_push);
 }
-
-
