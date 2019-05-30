@@ -278,3 +278,58 @@ void PushBoxGame::pushRefresh(WINDOW *win,int push){
     mvwprintw(win,2,3,"%d",push);
     wrefresh(win_push);
 }
+
+void PushBoxGame::clearMap() {
+    win_clear=newwin(27,27,0,0);
+    wattron(win_clear,COLOR_PAIR(2));
+    wborder(win_clear,'*','*','*','*','*','*','*','*');
+    wattroff(win_clear,COLOR_PAIR(2));
+    wattron(win_clear,COLOR_PAIR(3));
+    mvwprintw(win_clear, 5, 6, "CONGRATULATIONS!");
+    mvwprintw(win_clear, 12, 7, "PRESS ANY KEY");
+    mvwprintw(win_clear, 14, 5, "TO PLAY NEXT LEVEL");
+    wattroff(win_clear,COLOR_PAIR(3));        
+    refresh();
+    wrefresh(win_clear);
+    delwin(win_clear);
+    getch();
+}
+
+void PushBoxGame::reloadMap() {
+    resize_term(27,27);
+    attron(COLOR_PAIR(2));
+    border('*','*','*','*','*','*','*','*');
+    mvprintw(2,7,"push box game");
+    attroff(COLOR_PAIR(2));
+
+    win_level=newwin(4,7,4,2);
+    wborder(win_level,'|','|','-','-','+','+','+','+');
+    mvwprintw(win_level,1,1,"Level");
+    win_push=newwin(4,7,4,10);
+    wborder(win_push,'|','|','-','-','+','+','+','+');
+    mvwprintw(win_push,1,1,"Push");
+    mvwprintw(win_push,2,3,"%d",s.getPush());
+    win_step=newwin(4,7,4,18);
+    wborder(win_step,'|','|','-','-','+','+','+','+');
+    mvwprintw(win_step,1,1,"Step");
+    mvwprintw(win_step,2,3,"%d",s.getStep());
+    refresh();
+    wrefresh(win_push);
+    wrefresh(win_step);
+}
+
+void PushBoxGame::ending() {
+    win_end=newwin(27,27,0,0);
+    wattron(win_end,COLOR_PAIR(2));
+    wborder(win_end,'*','*','*','*','*','*','*','*');
+    wattroff(win_end,COLOR_PAIR(2));
+    wattron(win_end,COLOR_PAIR(3));
+    mvwprintw(win_end, 5, 6, "CONGRATULATIONS!");
+    mvwprintw(win_end, 6, 4, "YOU CLEAR ALL LEVEL!");
+    mvwprintw(win_end, 12, 7, "PRESS ANY KEY");
+    mvwprintw(win_end, 14, 8, "TO EXIT GAME");
+    wattroff(win_end,COLOR_PAIR(3));        
+    refresh();
+    wrefresh(win_end);
+    getch();
+}

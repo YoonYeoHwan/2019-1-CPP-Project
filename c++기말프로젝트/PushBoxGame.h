@@ -18,6 +18,8 @@ private:
     WINDOW *win_level;
     WINDOW *win_step;
     WINDOW *win_start;
+    WINDOW *win_clear;
+    WINDOW *win_end;
     int map_arr[10][10];
     position start;
     int a;
@@ -54,7 +56,6 @@ public:
         mvprintw(2,7,"push box game");
         attroff(COLOR_PAIR(2));
 
-        attron(COLOR_PAIR(2));
         win_level=newwin(4,7,4,2);
         wborder(win_level,'|','|','-','-','+','+','+','+');
         mvwprintw(win_level,1,1,"Level");
@@ -67,7 +68,6 @@ public:
         wborder(win_step,'|','|','-','-','+','+','+','+');
         mvwprintw(win_step,1,1,"Step");
         mvwprintw(win_step,2,3,"0");
-        attroff(COLOR_PAIR(2));
         refresh();
         wrefresh(win_level);
         wrefresh(win_push);
@@ -83,4 +83,7 @@ public:
     void stepRefresh(WINDOW *win,int step);
     void pushRefresh(WINDOW *win,int push);
     int (*getMap())[10];
+    void clearMap();
+    void reloadMap();
+    void ending();
 };
