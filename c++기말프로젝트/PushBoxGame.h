@@ -1,4 +1,5 @@
 #include "map.h"
+#include "score.cpp"
 #include <ncurses.h>
 
 enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
@@ -10,6 +11,7 @@ struct position{
 
 class PushBoxGame{
 private:
+    score s;
     mapArray m;
     WINDOW *game_map;
     WINDOW *win_push;
@@ -39,7 +41,7 @@ public:
         win_level=newwin(4,7,4,2);
         wborder(win_level,'|','|','-','-','+','+','+','+');
         mvwprintw(win_level,1,1,"Level");
-        mvwprintw(win_level,2,3,"0");
+        mvwprintw(win_level,2,3,"1");
         win_push=newwin(4,7,4,10);
         wborder(win_push,'|','|','-','-','+','+','+','+');
         mvwprintw(win_push,1,1,"Push");
@@ -61,5 +63,7 @@ public:
     void moveRIGHT(int map[][10]);
     void moveLEFT(int map[][10]);
     bool finishGame();
+    void stepRefresh(WINDOW *win,int step);
+    void pushRefresh(WINDOW *win,int push);
     int (*getMap())[10];
 };
