@@ -1,7 +1,10 @@
 all:pushboxgame
 
-pushboxgame:game.o map.o main.o
-	g++ -W -Wall -g -o pushboxgame game.o map.o main.o -lncurses
+pushboxgame:game.o map.o main.o score.o
+	g++ -W -Wall -g -o pushboxgame score.o game.o map.o main.o -lncurses
+
+Score.o:score.cpp
+	g++ -W -Wall -g -c -o score.o score.cpp
 
 game.o:game.cpp
 	g++ -W -Wall -g -c -o game.o game.cpp 

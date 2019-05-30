@@ -1,5 +1,5 @@
 #include "map.h"
-#include "score.cpp"
+#include "score.h"
 #include <ncurses.h>
 
 enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
