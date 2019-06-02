@@ -4,10 +4,6 @@
 
 enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
 
-struct position{
-    int x,y;
-    position(int x=0,int y=0):x(x),y(y){}
-};
 
 class PushBoxGame{
 private:
@@ -21,7 +17,6 @@ private:
     WINDOW *win_clear;
     WINDOW *win_end;
     int map_arr[10][10];
-    position start;
     int a;
     int b;
     int goalCount;

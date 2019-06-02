@@ -32,6 +32,31 @@ void PushBoxGame::setMap(int level){
         mvwprintw(win_level,2,3,"%d",level);
         wrefresh(win_level);
     }
+    else if(level==6) {
+        m.set_map(map_arr,level,a,b,goalCount);
+        mvwprintw(win_level,2,3,"%d",level);
+        wrefresh(win_level);
+    }
+    else if(level==7) {
+        m.set_map(map_arr,level,a,b,goalCount);
+        mvwprintw(win_level,2,3,"%d",level);
+        wrefresh(win_level);
+    }
+    else if(level==8) {
+        m.set_map(map_arr,level,a,b,goalCount);
+        mvwprintw(win_level,2,3,"%d",level);
+        wrefresh(win_level);
+    }
+    else if(level==9) {
+        m.set_map(map_arr,level,a,b,goalCount);
+        mvwprintw(win_level,2,3,"%d",level);
+        wrefresh(win_level);
+    }
+    else if(level==10) {
+        m.set_map(map_arr,level,a,b,goalCount);
+        mvwprintw(win_level,2,3,"%d",level);
+        wrefresh(win_level);
+    }
 }
 
 void PushBoxGame::newGame(int map[][10]){
