@@ -18,6 +18,7 @@ private:
     WINDOW *win_clear;
     WINDOW *win_end;
     WINDOW *win_life;
+    WINDOW *win_over;
     int map_arr[10][10];
     int a;
     int b;
@@ -87,7 +88,8 @@ public:
     void lifeRefresh();
     int getlife();
     int (*getMap())[10];
-    void clearMap();
+    void clearMap(int level);
     void reloadMap();
-    void ending();
+    void ending(int level);
+    void gameover(int level);
 };
