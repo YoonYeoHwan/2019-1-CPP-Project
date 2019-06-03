@@ -1,5 +1,6 @@
 #include "map.h"
 #include "score.h"
+#include <string.h>
 #include <ncurses.h>
 
 enum {Space,Wall,Box,Goal,Out,BoxOnGoal};
@@ -16,6 +17,7 @@ private:
     WINDOW *win_start;
     WINDOW *win_clear;
     WINDOW *win_end;
+    WINDOW *win_life;
     int map_arr[10][10];
     int a;
     int b;
@@ -27,19 +29,18 @@ public:
         curs_set(0);
         noecho();
         start_color();
-        init_pair(1, COLOR_YELLOW, COLOR_YELLOW);
-        init_pair(2,COLOR_RED,COLOR_BLUE);
-        init_pair(3,COLOR_RED,COLOR_WHITE);
+        init_pair(1, COLOR_WHITE, COLOR_WHITE);
+        init_pair(2,COLOR_RED,COLOR_WHITE);
 
         win_start=newwin(27,27,0,0);
         wattron(win_start,COLOR_PAIR(2));
         wborder(win_start,'*','*','*','*','*','*','*','*');
         wattroff(win_start,COLOR_PAIR(2));
-        wattron(win_start,COLOR_PAIR(3));
+        wattron(win_start,COLOR_PAIR(2));
         mvwprintw(win_start, 4, 7, "PUSH BOX GAME");
         mvwprintw(win_start, 12, 7, "PRESS ANY KEY");
         mvwprintw(win_start, 14, 7, "TO START GAME");
-        wattroff(win_start,COLOR_PAIR(3));        
+        wattroff(win_start,COLOR_PAIR(2));        
         refresh();
         wrefresh(win_start);
         getch();
@@ -49,6 +50,7 @@ public:
         attron(COLOR_PAIR(2));
         border('*','*','*','*','*','*','*','*');
         mvprintw(2,7,"push box game");
+        mvprintw(9,7,"F1 is restart");
         attroff(COLOR_PAIR(2));
 
         win_level=newwin(4,7,4,2);
@@ -63,10 +65,15 @@ public:
         wborder(win_step,'|','|','-','-','+','+','+','+');
         mvwprintw(win_step,1,1,"Step");
         mvwprintw(win_step,2,3,"0");
+        win_life=newwin(4,7,22,10);
+        wborder(win_life,'|','|','-','-','+','+','+','+');
+        mvwprintw(win_life,1,1,"Life");
+        mvwprintw(win_life,2,3,"3");
         refresh();
         wrefresh(win_level);
         wrefresh(win_push);
         wrefresh(win_step);
+        wrefresh(win_life);
     }
     void setMap(int level);
     void newGame(int map[][10]);
@@ -77,6 +84,8 @@ public:
     bool finishGame();
     void stepRefresh(WINDOW *win,int step);
     void pushRefresh(WINDOW *win,int push);
+    void lifeRefresh();
+    int getlife();
     int (*getMap())[10];
     void clearMap();
     void reloadMap();

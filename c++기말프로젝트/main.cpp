@@ -4,6 +4,10 @@ int main(){
     PushBoxGame g;
     int level=1;
     while(1){
+        if(g.getlife()==0){
+            g.ending();
+            break;
+        }
         if(level==10){
             g.ending();
             getch();
@@ -15,6 +19,7 @@ int main(){
         while(true){
             int inputKey=getch();
             if(inputKey==KEY_F(1)){
+                g.lifeRefresh();
                 g.setMap(--level);
                 g.newGame(g.getMap());
                 break;
