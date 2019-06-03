@@ -53,7 +53,7 @@ int main(){
             }
         }
         if(level!=11 && checkF1==false) {
-            g.clearMap(level);
+            g.clearMap();
             g.reloadMap();
         }
         if(g.getlife()==0){

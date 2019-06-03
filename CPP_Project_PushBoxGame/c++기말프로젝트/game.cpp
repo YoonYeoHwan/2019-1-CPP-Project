@@ -313,16 +313,13 @@ int PushBoxGame::getlife(){
     return s.getLife();
 }
 
-void PushBoxGame::clearMap(int level) {
-    int nowScore = (level * 200 + s.getLife() * 200) - (s.getPush() * 5 + s.getStep() * 3);
+void PushBoxGame::clearMap() {
     win_clear=newwin(27,27,0,0);
     wattron(win_clear,COLOR_PAIR(2));
     wborder(win_clear,'*','*','*','*','*','*','*','*');
     mvwprintw(win_clear, 5, 6, "CONGRATULATIONS!");
-    mvwprintw(win_clear, 12, 7, "YOUR SCORE IS");
-    mvwprintw(win_clear, 14, 9, "%d POINT", nowScore);
-    mvwprintw(win_clear, 20, 7, "PRESS ANY KEY");
-    mvwprintw(win_clear, 22, 5, "TO PLAY NEXT LEVEL");
+    mvwprintw(win_clear, 12, 7, "PRESS ANY KEY");
+    mvwprintw(win_clear, 14, 5, "TO PLAY NEXT LEVEL");
     wattroff(win_clear,COLOR_PAIR(2));        
     refresh();
     wrefresh(win_clear);
