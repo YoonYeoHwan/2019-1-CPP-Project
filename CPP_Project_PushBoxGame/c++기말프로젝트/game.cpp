@@ -372,7 +372,7 @@ void PushBoxGame::ending(int level) {
 }
 
 void PushBoxGame::gameover(int level) {
-    int nowScore = (level * 200 + s.getLife() * 200) - (s.getPush() * 5 + s.getStep() * 3);
+    int nowScore = (level * 200 + s.getLife() * 200) - (s.getPush() + s.getStep());
     win_over=newwin(27,27,0,0);
     wattron(win_over,COLOR_PAIR(2));
     wborder(win_over,'*','*','*','*','*','*','*','*');
